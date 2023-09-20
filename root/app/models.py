@@ -5,8 +5,7 @@ User = get_user_model()
 
 
 class Product(models.Model):
-    """Продукт это список уроков и пользователь, имеющий к ним доступ"""
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
+    name = models.CharField(max_length=256)
     lessons = models.ManyToManyField(
         'Lesson',
         through='ProductLesson',
@@ -14,7 +13,15 @@ class Product(models.Model):
     )
 
     def __str__(self):
-        return f'Продукт пользователя {self.owner}'
+        return f'Набор уроков "{self.name}"'
+
+
+class ProductUser(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.owner} : {self.product} '
 
 
 class Lesson(models.Model):

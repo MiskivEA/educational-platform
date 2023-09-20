@@ -1,3 +1,5 @@
+"""Модуль для работы с переменными окужения"""
+
 from dataclasses import dataclass
 from environs import Env
 

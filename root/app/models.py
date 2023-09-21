@@ -9,19 +9,18 @@ class Product(models.Model):
     """Продукт. Название и владелец, и набор уроков"""
     name = models.CharField(max_length=128)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
-    lessons = models.ManyToManyField('Lesson')
+    buyers = models.ManyToManyField(User, blank=True, through='ProductBuyer')
 
     def __str__(self):
         return f'Продукт: {self.name}. Владелец продукта: {self.owner}'
 
 
-class AccessProduct(models.Model):
-    """Сущность для хранения доступов"""
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='access_products')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='access_products')
+class ProductBuyer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products_buyer')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products_buyer')
 
     def __str__(self):
-        return f'{self.user} --- {self.product}'
+        return f'{self.user} приобрел {self.product} '
 
 
 # 2
@@ -30,6 +29,7 @@ class Lesson(models.Model):
     title = models.CharField(max_length=256)
     link = models.URLField()
     duration = models.PositiveIntegerField()
+    products = models.ManyToManyField('Product', related_name='lessons')
 
     def __str__(self):
         return f'Тема урока: {self.title}'

@@ -3,9 +3,25 @@ from .models import Product, Lesson, LessonView
 
 
 class LessonSerializer(serializers.ModelSerializer):
-
-    # status = serializers.StringRelatedField(read_only=True, source='lessons.')
+    lesson = serializers.StringRelatedField(read_only=True)
 
     class Meta:
-        model = Lesson
-        fields = '__all__'
+        model = LessonView
+        fields = (
+            'lesson',
+            'view_status',
+            'current_time'
+        )
+
+
+class LessonSerializerWithTime(serializers.ModelSerializer):
+    lesson = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = LessonView
+        fields = (
+            'lesson',
+            'view_status',
+            'current_time',
+            'updated_at'
+        )

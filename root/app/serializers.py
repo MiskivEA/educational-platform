@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Lesson, LessonViewer
+from .models import Product, Lesson, LessonView
 
 
 class LessonSerializer(serializers.ModelSerializer):

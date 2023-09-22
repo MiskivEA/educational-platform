@@ -1,15 +1,19 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from rest_framework import serializers
-from .models import Product, Lesson, LessonView
+
+from .models import LessonView, Product
 
 User = get_user_model()
 
 
 class LessonSerializer(serializers.ModelSerializer):
-    title = serializers.StringRelatedField(read_only=True, source='lesson.title')
-    link = serializers.StringRelatedField(read_only=True, source='lesson.link')
-    duration = serializers.StringRelatedField(read_only=True, source='lesson.duration')
+    title = serializers.StringRelatedField(read_only=True,
+                                           source='lesson.title')
+    link = serializers.StringRelatedField(read_only=True,
+                                          source='lesson.link')
+    duration = serializers.StringRelatedField(read_only=True,
+                                              source='lesson.duration')
 
     class Meta:
         model = LessonView
@@ -24,9 +28,12 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializerWithTime(serializers.ModelSerializer):
-    title = serializers.StringRelatedField(read_only=True, source='lesson.title')
-    link = serializers.StringRelatedField(read_only=True, source='lesson.link')
-    duration = serializers.StringRelatedField(read_only=True, source='lesson.duration')
+    title = serializers.StringRelatedField(read_only=True,
+                                           source='lesson.title')
+    link = serializers.StringRelatedField(read_only=True,
+                                          source='lesson.link')
+    duration = serializers.StringRelatedField(read_only=True,
+                                              source='lesson.duration')
 
     class Meta:
         model = LessonView
@@ -71,4 +78,3 @@ class ProductSerializer(serializers.ModelSerializer):
         total_users = User.objects.all().count()
         product_use = obj.buyers.count()
         return f'{int((product_use/total_users) * 100)} %'
-

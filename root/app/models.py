@@ -4,12 +4,14 @@ from django.db import models
 User = get_user_model()
 
 
-# 1
 class Product(models.Model):
     """Продукт. Название и владелец, и набор уроков"""
     name = models.CharField(max_length=128)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
-    buyers = models.ManyToManyField(User, blank=True, through='ProductBuyer',
+    owner = models.ForeignKey(User,
+                              on_delete=models.CASCADE,
+                              related_name='products')
+    buyers = models.ManyToManyField(User, blank=True,
+                                    through='ProductBuyer',
                                     related_name='get_products')
 
     def __str__(self):
@@ -17,14 +19,17 @@ class Product(models.Model):
 
 
 class ProductBuyer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products_buyer')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products_buyer')
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='products_buyer')
+    product = models.ForeignKey(Product,
+                                on_delete=models.CASCADE,
+                                related_name='products_buyer')
 
     def __str__(self):
         return f'{self.user} приобрел {self.product}'
 
 
-# 2
 class Lesson(models.Model):
     """Урок: название, ссылка, продолжительность"""
     title = models.CharField(max_length=256)
@@ -43,7 +48,9 @@ class LessonView(models.Model):
         not_viewed = 'not_viewed', 'Не просмотрено'
         viewed = 'viewed', 'Просмотрено'
 
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='Урок',
+    lesson = models.ForeignKey(Lesson,
+                               on_delete=models.CASCADE,
+                               verbose_name='Урок',
                                related_name='get_lesson_view')
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,

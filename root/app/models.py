@@ -24,9 +24,6 @@ class ProductBuyer(models.Model):
         return f'{self.user} приобрел {self.product}'
 
 
-
-
-
 # 2
 class Lesson(models.Model):
     """Урок: название, ссылка, продолжительность"""

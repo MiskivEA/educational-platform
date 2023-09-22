@@ -9,7 +9,8 @@ class Product(models.Model):
     """Продукт. Название и владелец, и набор уроков"""
     name = models.CharField(max_length=128)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
-    buyers = models.ManyToManyField(User, blank=True, through='ProductBuyer')
+    buyers = models.ManyToManyField(User, blank=True, through='ProductBuyer',
+                                    related_name='get_products')
 
     def __str__(self):
         return f'Продукт: {self.name}. Владелец продукта: {self.owner}'
@@ -20,7 +21,10 @@ class ProductBuyer(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products_buyer')
 
     def __str__(self):
-        return f'{self.user} приобрел {self.product} '
+        return f'{self.user} приобрел {self.product}'
+
+
+
 
 
 # 2
@@ -42,8 +46,12 @@ class LessonView(models.Model):
         not_viewed = 'not_viewed', 'Не просмотрено'
         viewed = 'viewed', 'Просмотрено'
 
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='Урок')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Зритель')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='Урок',
+                               related_name='get_lesson_view')
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             verbose_name='Зритель',
+                             related_name='user_views')
     current_time = models.PositiveIntegerField(default=0)
     view_status = models.TextField(choices=Status.choices,
                                    default=Status.not_viewed)
